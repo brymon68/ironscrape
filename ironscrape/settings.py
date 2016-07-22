@@ -21,6 +21,8 @@ DUPEFILTER_CLASS = 'ironscrape.duplicate_filter.CustomFilter'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
+DELTAFETCH_ENABLED = True
+DOTSCRAPY_ENABLED = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -48,8 +50,7 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-DELTAFETCH_ENABLED = True
-DOTSCRAPY_ENABLED = True
+
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
@@ -72,7 +73,7 @@ ITEM_PIPELINES = {
 MONGODB_SERVER = "localhost"
 MONGODB_PORT = 27017
 MONGODB_DB = "ironscrape_results"
-MONGODB_COLLECTION = "boulder_703_2016"
+MONGODB_COLLECTION = "racine_703_2016"
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True

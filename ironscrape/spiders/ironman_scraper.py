@@ -35,19 +35,9 @@ class ironman_scraper(scrapy.Spider):
              'kraichgau70.3', 'timbermansprint']
     years = ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016']
 
-    # for i in range(1, 3001):
-    #     for y in len(years):
-    #         for r in len(races):
-    #             params = {'year': years[y], 'race': races[r]}
-    #             url = "http://track.ironman.com/newsearch.php?"
-    #             url_parts = list(urlparse.urlparse(url))
-    #             query = dict(urlparse.parse_qsl(url_parts[4]))
-    #             query.update(params)
-    #             url_parts[4] = urlencode(query)
-    #             start_urls.append(urlparse.urlunparse(url_parts))
 
-    for i in range(1,50):
-        params = {'bib': i, 'rid': 727828834329}
+    for i in range(1,2):
+        params = {'bib': i, 'rid': 727828834324}
         url = "http://track.ironman.com/newathlete.php?"
         url_parts = list(urlparse.urlparse(url))
         query = dict(urlparse.parse_qsl(url_parts[4]))
@@ -64,104 +54,13 @@ class ironman_scraper(scrapy.Spider):
         yield item
 
     def setSplits(self, response, item):
-        swimSplitsList=[]
-        bikeSplitsList = []
-        runSplitsList = []
         splitTables = response.xpath('//div[@class="athlete-table-details"]')
-        splitCount=0
         splitData = splitTables.xpath('//td//text()').extract()
-        swimSplitVals=[]
-        bikeSplitVals1 =[]
-        bikeSplitVals2 = []
-        bikeSplitVals3 = []
-        bikeSplitVals4 = []
-        runSplitVals1=[]
-        runSplitVals2=[]
-        runSplitVals3=[]
-        runSplitVals4=[]
-        runSplitVals5=[]
-        count=0
-        if len(splitData) == 83:
-            for td in splitData:
-                if splitCount==12:
-                    swimSplitVals.append(td)
-                if splitCount==14:
-                    bikeSplitVals1.append(td)
-                    bikeSplitVals2.append(td)
-                    bikeSplitVals3.append(td)
-                    bikeSplitVals4.append(td)
-                if splitCount==16:
-                    runSplitVals1.append(td)
-                    runSplitVals2.append(td)
-                    runSplitVals3.append(td)
-                    runSplitVals4.append(td)
-                    runSplitVals5.append(td)
-                elif splitCount in range(20, 28):
-                    swimSplitVals.append(td)
-                #here is bike splits now
-                elif splitCount in range (28, 33):
-                    bikeSplitVals1.append(td)
-                elif splitCount in range (33, 38):
-                    bikeSplitVals2.append(td)
-                elif splitCount in range (38, 43):
-                    bikeSplitVals3.append(td)
-                elif splitCount in range (43, 51):
-                    bikeSplitVals4.append(td)
-                elif splitCount in range (51, 56):
-                    runSplitVals1.append(td)
-                elif splitCount in range (56, 61):
-                    runSplitVals2.append(td)
-                elif splitCount in range (61, 66):
-                    runSplitVals3.append(td)
-                elif splitCount in range (66, 71):
-                    runSplitVals4.append(td)
-                elif splitCount in range (71, 79):
-                    runSplitVals5.append(td)
-                else:
-                    pass
-                splitCount+=1
-                count+=1
-            try:
-                swimSplit = SplitInfo(swimSplitVals[0], swimSplitVals[1], swimSplitVals[2], swimSplitVals[3], swimSplitVals[4], swimSplitVals[5], swimSplitVals[6], swimSplitVals[7], swimSplitVals[8])
-                bikeSplit1 = SplitInfo(bikeSplitVals1[0], bikeSplitVals1[1], bikeSplitVals1[2], bikeSplitVals1[3], bikeSplitVals1[4], bikeSplitVals1[5], "", "", "")
-                bikeSplit2 = SplitInfo(bikeSplitVals2[0], bikeSplitVals2[1], bikeSplitVals2[2], bikeSplitVals2[3], bikeSplitVals2[4], bikeSplitVals2[5], "", "", "")
-                bikeSplit3 = SplitInfo(bikeSplitVals3[0], bikeSplitVals3[1], bikeSplitVals3[2], bikeSplitVals3[3], bikeSplitVals3[4], bikeSplitVals3[5], "", "", "")
-                bikeSplit4 = SplitInfo(bikeSplitVals4[0], bikeSplitVals4[1], bikeSplitVals4[2], bikeSplitVals4[3], bikeSplitVals4[4], bikeSplitVals4[5], bikeSplitVals4[6], bikeSplitVals4[7], bikeSplitVals4[8])
-                runSplit1 = SplitInfo(runSplitVals1[0], runSplitVals1[1], runSplitVals1[2], runSplitVals1[3], runSplitVals1[4], runSplitVals1[5], "", "", "")
-                runSplit2 = SplitInfo(runSplitVals2[0], runSplitVals2[1], runSplitVals2[2], runSplitVals2[3], runSplitVals2[4], runSplitVals2[5], "", "", "")
-                runSplit3 = SplitInfo(runSplitVals3[0], runSplitVals3[1], runSplitVals3[2], runSplitVals3[3], runSplitVals3[4], runSplitVals3[5], "", "", "")
-                runSplit4 = SplitInfo(runSplitVals4[0], runSplitVals4[1], runSplitVals4[2], runSplitVals4[3], runSplitVals4[4], runSplitVals4[5], "", "", "")
-                runSplit5 = SplitInfo(runSplitVals5[0], runSplitVals5[1], runSplitVals5[2], runSplitVals5[3], runSplitVals5[4], runSplitVals5[5], runSplitVals5[6], runSplitVals5[7], runSplitVals5[8])
-                logging.info("Successfully inserted <TD> data into lists for: "+response.url)
-            except:
-                logging.info("WARNING: Unable to insert <TD> data into list on url: "+response.url)
-                exit()
+        self.processSwimSplits(splitData, item)
+        self.processBikeSplits(splitData, item)
+        self.processRunSplits(splitData, item)
 
-            jsonFormat1 = JSONEncoder().encode(swimSplit.returnDictionary())
-            jsonFormat2 = JSONEncoder().encode(bikeSplit1.returnDictionary())
-            jsonFormat3 = JSONEncoder().encode(bikeSplit2.returnDictionary())
-            jsonFormat4 = JSONEncoder().encode(bikeSplit3.returnDictionary())
-            jsonFormat5 = JSONEncoder().encode(bikeSplit4.returnDictionary())
-            jsonFormat6 = JSONEncoder().encode(runSplit1.returnDictionary())
-            jsonFormat7 = JSONEncoder().encode(runSplit2.returnDictionary())
-            jsonFormat8 = JSONEncoder().encode(runSplit3.returnDictionary())
-            jsonFormat9 = JSONEncoder().encode(runSplit4.returnDictionary())
-            jsonFormat10 = JSONEncoder().encode(runSplit5.returnDictionary())
 
-            swimSplitsList.append(jsonFormat1)
-            bikeSplitsList.append(jsonFormat2)
-            bikeSplitsList.append(jsonFormat3)
-            bikeSplitsList.append(jsonFormat4)
-            bikeSplitsList.append(jsonFormat5)
-            runSplitsList.append(jsonFormat6)
-            runSplitsList.append(jsonFormat7)
-            runSplitsList.append(jsonFormat8)
-            runSplitsList.append(jsonFormat9)
-            runSplitsList.append(jsonFormat10)
-            item['swimDetails'] = swimSplitsList
-            item['bikeDetails'] = bikeSplitsList
-            item['runDetails'] = runSplitsList
-            logging.info("successful")
 
     def setGeneralTimes(self, response, item):
         generalTimesCount = 0
@@ -201,6 +100,129 @@ class ironman_scraper(scrapy.Spider):
             item['divRank'] = sel
         for sel in response.xpath('//h1/text()').extract():
             item['athleteName'] = sel
+
+    def processSwimSplits(self, splitdata, item):
+        swimSplitsList=[]
+        swimSplitVals=[]
+        splitCount = 0
+        count = 0
+        for td in splitdata:
+            if splitCount == 12:
+                swimSplitVals.append(td)
+            elif splitCount in range(20, 28):
+                swimSplitVals.append(td)
+            else:
+                pass
+            splitCount += 1
+            count += 1
+        try:
+            obj = SplitInfo(swimSplitVals[0], swimSplitVals[1], swimSplitVals[2], swimSplitVals[3], swimSplitVals[4], swimSplitVals[5], swimSplitVals[6], swimSplitVals[7], swimSplitVals[8])
+            jsonFormat = JSONEncoder().encode(obj.returnDictionary())
+            swimSplitsList.append(jsonFormat)
+            item['swimDetails'] = swimSplitsList
+        except:
+            print "whoa some shit when wrong in swim"
+
+
+    def processBikeSplits(self, splitdata, item):
+        bikeSplitsJSONList = []
+        bikeSplitsList = []
+        for i in range(4):
+            bikeSplitsList.append([])
+        splitCount = 0
+        count = 0
+        if (len(splitdata) == 83) or (len(splitdata) == 87) or (len(splitdata) ==88):
+            for td in splitdata:
+                if splitCount == 14:
+                    for list in bikeSplitsList:
+                        list.append(td)
+                elif splitCount in range(28, 33):
+                    bikeSplitsList[0].append(td)
+                elif splitCount in range(33, 38):
+                    bikeSplitsList[1].append(td)
+                elif splitCount in range(38, 43):
+                    bikeSplitsList[2].append(td)
+                elif splitCount in range(43, 48):
+                    bikeSplitsList[3].append(td)
+                elif splitCount in range(48, 51):
+                    for list in bikeSplitsList:
+                        list.append(td)
+                else:
+                    pass
+                splitCount += 1
+                count += 1
+        try:
+            for list in bikeSplitsList:
+                splitinfo = SplitInfo(list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7], list[8])
+                jsonFormat = JSONEncoder().encode(splitinfo.returnDictionary())
+                bikeSplitsJSONList.append(jsonFormat)
+            item['bikeDetails'] = bikeSplitsJSONList
+        except:
+            print "whoa some shit when wrong in bike"
+
+    def processRunSplits(self, splitdata, item):
+        runSplitsJSONList = []
+        runSplitsList = []
+        splitCount = 0
+        count = 0
+        if len(splitdata) == 83:
+            for y in range(5):
+                runSplitsList.append([])
+            for td in splitdata:
+                if splitCount == 16:
+                    for list in runSplitsList:
+                        list.append(td)
+                elif splitCount in range(51, 56):
+                    runSplitsList[0].append(td)
+                elif splitCount in range(56, 61):
+                    runSplitsList[1].append(td)
+                elif splitCount in range(61, 66):
+                    runSplitsList[2].append(td)
+                elif splitCount in range(66, 71):
+                    runSplitsList[3].append(td)
+                elif splitCount in range(71, 76):
+                    runSplitsList[4].append(td)
+                elif splitCount in range (76, 79):
+                    for list in runSplitsList:
+                        list.append(td)
+                else:
+                    pass
+                splitCount += 1
+                count += 1
+        elif len(splitdata) == 87 or len(splitdata) ==88:
+            for y in range(6):
+                runSplitsList.append([])
+            for td in splitdata:
+                if splitCount == 16:
+                    for list in runSplitsList:
+                        list.append(td)
+                elif splitCount in range(51, 56):
+                    runSplitsList[0].append(td)
+                elif splitCount in range(56, 61):
+                    runSplitsList[1].append(td)
+                elif splitCount in range(61, 66):
+                    runSplitsList[2].append(td)
+                elif splitCount in range(66, 71):
+                    runSplitsList[3].append(td)
+                elif splitCount in range(71, 76):
+                    runSplitsList[4].append(td)
+                elif splitCount in range(76, 81):
+                    runSplitsList[5].append(td)
+                elif splitCount in range(81, 84):
+                    for list in runSplitsList:
+                        list.append(td)
+                else:
+                    pass
+                splitCount += 1
+                count += 1
+        try:
+            for list in runSplitsList:
+                splitinfo = SplitInfo(list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7], list[8])
+                jsonFormat = JSONEncoder().encode(splitinfo.returnDictionary())
+                runSplitsJSONList.append(jsonFormat)
+            item['runDetails'] = runSplitsJSONList
+        except:
+            print "whoa some shit when wrong in run"
 
 
 class SplitInfo():
