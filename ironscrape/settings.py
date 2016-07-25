@@ -73,7 +73,7 @@ ITEM_PIPELINES = {
 MONGODB_SERVER = "localhost"
 MONGODB_PORT = 27017
 MONGODB_DB = "ironscrape_results"
-MONGODB_COLLECTION = "racine_703_2016"
+MONGODB_COLLECTION = "wisconsin_2015"
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
